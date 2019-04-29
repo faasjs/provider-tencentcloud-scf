@@ -42,6 +42,16 @@ const cosUploadFile = function (SecretId: string, SecretKey: string, params: any
   });
 };
 
+/**
+ * 发出请求
+ *
+ * @param logger {Logger} 日志类实例
+ * @param config {object} 服务商基本参数
+ * @param config.region {string} 区域
+ * @param config.secretId {string} secretId
+ * @param config.secretKey {string} secretKey
+ * @param params {object} 请求参数
+ */
 const action = function (logger: Logger, config: any, params: any) {
   logger.debug('%o', params);
 
@@ -180,5 +190,6 @@ const deploy = async function (provider: any, func: any) {
 };
 
 export {
+  action,
   deploy,
 };
