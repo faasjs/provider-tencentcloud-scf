@@ -1,7 +1,9 @@
 {
   "name": "@faasjs/provider-tencentcloud-scf",
-  "version": "0.0.0-alpha.2",
+  "version": "0.0.0-alpha.3",
   "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "lint": "tslint -p tsconfig.json --fix",
     "build": "rm -rf ./lib && tsc",
