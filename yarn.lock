@@ -672,10 +672,10 @@
   dependencies:
     "@faasjs/logger" "0.0.0-alpha.0"
 
-"@faasjs/utils@0.0.0-alpha.3":
-  version "0.0.0-alpha.3"
-  resolved "https://registry.npm.taobao.org/@faasjs/utils/download/@faasjs/utils-0.0.0-alpha.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40faasjs%2Futils%2Fdownload%2F%40faasjs%2Futils-0.0.0-alpha.3.tgz#c74f870dd6eb638b2e0d8bead03268a431ba588b"
-  integrity sha1-x0+HDdbrY4suDYvq0DJopDG6WIs=
+"@faasjs/utils@0.0.0-alpha.4":
+  version "0.0.0-alpha.4"
+  resolved "https://registry.npm.taobao.org/@faasjs/utils/download/@faasjs/utils-0.0.0-alpha.4.tgz#4ac818232a1a624450748134813aec91e6e07762"
+  integrity sha1-SsgYIyoaYkRQdIE0gTrskebgd2I=
   dependencies:
     "@faasjs/logger" "0.0.0-alpha.0"
     "@faasjs/request" "0.0.0-alpha.0"
