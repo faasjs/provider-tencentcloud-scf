@@ -4,7 +4,7 @@
 <dt><a href="#action">action(logger, config, params)</a></dt>
 <dd><p>发出请求</p>
 </dd>
-<dt><a href="#deploy">deploy(provider, func)</a></dt>
+<dt><a href="#deploy">deploy(staging, func)</a></dt>
 <dd><p>发布云函数</p>
 </dd>
 </dl>
@@ -27,13 +27,13 @@
 
 <a name="deploy"></a>
 
-## deploy(provider, func)
+## deploy(staging, func)
 发布云函数
 
 **Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| provider | <code>object</code> | 服务商配置 |
-| func | <code>object</code> | 云函数配置 |
+| staging | <code>string</code> | 部署环境 |
+| func | <code>object</code> | 部署配置 |
 
