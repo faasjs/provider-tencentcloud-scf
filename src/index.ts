@@ -1,4 +1,4 @@
-import { deepMerge } from '@faasjs/utils';
+import deepMerge from '@faasjs/deep_merge';
 import request from '@faasjs/request';
 import Logger from '@faasjs/logger';
 import { execSync } from 'child_process';
