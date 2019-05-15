@@ -192,7 +192,17 @@ const deploy = async function (staging: string, func: any) {
     }
   }
 
-  return true;
+  logger.debug('发布版本');
+  const res = await action(logger, config, {
+    Action: 'PublishVersion',
+    Description: `Published by ${process.env.LOGNAME}`,
+    FunctionName: func.name,
+    Namespace: staging
+  });
+
+  func.version = res.FunctionVersion;
+
+  return func;
 };
 
 export {
