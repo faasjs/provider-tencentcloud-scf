@@ -34,17 +34,14 @@ test.each(['region', 'secretId', 'secretKey'])('%s', async function (key) {
 });
 
 test('should work', async function () {
-  const res = await deploy('testing', {
-    name: 'testing',
+  const func = {
+    name: 'name',
     resource: {
       config: {
         Handler: 'index.handler',
         MemorySize: 128,
         Timeout: 15,
-        Runtime: 'Nodejs8.9',
-        Environment: {
-          Key: 'Value'
-        }
+        Runtime: 'Nodejs8.9'
       },
       provider: {
         config: {
@@ -60,7 +57,20 @@ test('should work', async function () {
       version: '0.0.0',
     },
     tmpFolder: process.cwd() + '/src/__tests__/mock',
-  });
+  };
+  const res = await deploy('testing', func);
 
   expect(res).toBeTruthy();
+  expect(func.resource.config.Environment.Variables[0]).toEqual({
+    Key: 'FaasMode',
+    Value: 'remote'
+  });
+  expect(func.resource.config.Environment.Variables[1]).toEqual({
+    Key: 'FaasEnv',
+    Value: 'testing'
+  });
+  expect(func.resource.config.Environment.Variables[2]).toEqual({
+    Key: 'FaasName',
+    Value: 'name'
+  });
 });

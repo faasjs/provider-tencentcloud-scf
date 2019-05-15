@@ -86,15 +86,29 @@ const action = function (logger: Logger, config: any, params: any) {
   });
 };
 
-const formatEnvironment = function (env: any) {
-  if (!env || env.Variables) { return env; }
-  const Variables: any = [];
-  Object.keys(env).forEach(function (k) {
-    Variables.push({
-      Key: k,
-      Value: env[k as string],
+const formatEnvironment = function (env: any, extra: any) {
+  let Variables: any[] = [];
+
+  if (env && env.Variables) {
+    Variables = env.Variables;
+  } else if (env) {
+    Object.keys(env).forEach(function (k) {
+      Variables.push({
+        Key: k,
+        Value: env[k as string],
+      });
     });
-  });
+  }
+
+  for (const key in extra) {
+    if (extra.hasOwnProperty(key)) {
+      Variables.push({
+        Key: key,
+        Value: extra[key as string],
+      });
+    }
+  }
+
   return { Variables };
 };
 
@@ -125,6 +139,13 @@ const deploy = async function (staging: string, func: any) {
       throw Error(`${key} required`);
     }
   }
+
+  // 处理环境变量
+  func.resource.config.Environment = formatEnvironment(func.resource.config.Environment, {
+    FaasMode: 'remote',
+    FaasEnv: staging,
+    FaasName: func.name
+  });
 
   logger.debug('打包源代码');
   execSync(`cd ${func.tmpFolder} && zip -r deploy.zip *`);
@@ -162,7 +183,7 @@ const deploy = async function (staging: string, func: any) {
 
     await action(logger, config, {
       Action: 'UpdateFunctionConfiguration',
-      Environment: formatEnvironment(func.resource.config.Environment),
+      Environment: func.resource.config.Environment,
       FunctionName: func.name,
       MemorySize: func.resource.config.MemorySize,
       Timeout: func.resource.config.Timeout,
@@ -184,8 +205,6 @@ const deploy = async function (staging: string, func: any) {
         Namespace: staging,
       }, func.resource.config);
 
-      params.Environment = formatEnvironment(params.Environment);
-
       await action(logger, config, params);
     } else {
       throw error;
@@ -202,7 +221,7 @@ const deploy = async function (staging: string, func: any) {
 
   func.version = res.FunctionVersion;
 
-  return func;
+  return true;
 };
 
 export {
