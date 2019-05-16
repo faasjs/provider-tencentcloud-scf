@@ -140,6 +140,9 @@ const deploy = async function (staging: string, func: any) {
     }
   }
 
+  // 转换函数名
+  const FunctionName = func.name.replace(/\//g, '_');
+
   // 处理环境变量
   func.resource.config.Environment = formatEnvironment(func.resource.config.Environment, {
     FaasMode: 'remote',
@@ -163,7 +166,7 @@ const deploy = async function (staging: string, func: any) {
   try {
     await action(logger, config, {
       Action: 'GetFunction',
-      FunctionName: func.name,
+      FunctionName,
       Namespace: staging,
     });
 
@@ -174,7 +177,7 @@ const deploy = async function (staging: string, func: any) {
       CosBucketName: 'scf',
       CosBucketRegion: config.region,
       CosObjectName: func.deployFilename,
-      FunctionName: func.name,
+      FunctionName,
       Handler: func.resource.config.Handler,
       Namespace: staging,
     });
@@ -184,7 +187,7 @@ const deploy = async function (staging: string, func: any) {
     await action(logger, config, {
       Action: 'UpdateFunctionConfiguration',
       Environment: func.resource.config.Environment,
-      FunctionName: func.name,
+      FunctionName,
       MemorySize: func.resource.config.MemorySize,
       Timeout: func.resource.config.Timeout,
       VpcConfig: func.resource.config.VpcConfig,
@@ -201,7 +204,7 @@ const deploy = async function (staging: string, func: any) {
           CosBucketRegion: config.region,
           CosObjectName: func.deployFilename,
         },
-        FunctionName: func.name,
+        FunctionName,
         Namespace: staging,
       }, func.resource.config);
 
@@ -215,10 +218,11 @@ const deploy = async function (staging: string, func: any) {
   const res = await action(logger, config, {
     Action: 'PublishVersion',
     Description: `Published by ${process.env.LOGNAME}`,
-    FunctionName: func.name,
+    FunctionName,
     Namespace: staging
   });
 
+  func.functionName = FunctionName;
   func.version = res.FunctionVersion;
 
   return true;

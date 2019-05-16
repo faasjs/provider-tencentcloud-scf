@@ -9,31 +9,19 @@ jest.mock(process.cwd() + '/node_modules/cos-nodejs-sdk-v5', () => {
 });
 
 jest.mock(process.cwd() + '/node_modules/@faasjs/request', () => {
-  return async function () {
+  return async function (url, params) {
+    if (params.body.Action === 'GetFunction') {
+      return {
+        body: '{"Response":{"Error":"ResourceNotFound.Function"}}'
+      };
+    }
     return {
       body: '{"Response":{}}'
     };
   };
 });
 
-test.each(['region', 'secretId', 'secretKey'])('%s', async function (key) {
-  try {
-    await deploy('testing', {
-      resource: {
-        provider: {
-          config: {
-            [key]: key
-          },
-          type: 'tencentcloud',
-        }
-      },
-    });
-  } catch (error) {
-    expect(error.message).toEqual('appId required');
-  }
-});
-
-test('should work', async function () {
+test('create', async function () {
   const func = {
     name: 'name',
     resource: {
@@ -58,19 +46,8 @@ test('should work', async function () {
     },
     tmpFolder: process.cwd() + '/src/__tests__/mock',
   };
+
   const res = await deploy('testing', func);
 
   expect(res).toBeTruthy();
-  expect(func.resource.config.Environment.Variables[0]).toEqual({
-    Key: 'FaasMode',
-    Value: 'remote'
-  });
-  expect(func.resource.config.Environment.Variables[1]).toEqual({
-    Key: 'FaasEnv',
-    Value: 'testing'
-  });
-  expect(func.resource.config.Environment.Variables[2]).toEqual({
-    Key: 'FaasName',
-    Value: 'name'
-  });
 });
