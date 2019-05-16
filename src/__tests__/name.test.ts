@@ -18,7 +18,7 @@ jest.mock(process.cwd() + '/node_modules/@faasjs/request', () => {
 
 test('name', async function () {
   const func = {
-    name: 'folder/name',
+    name: 'folder/name#trigger@0',
     resource: {
       config: {
         Handler: 'index.handler',
@@ -45,5 +45,5 @@ test('name', async function () {
   const res = await deploy('testing', func);
 
   expect(res).toBeTruthy();
-  expect(func.functionName).toEqual('folder_name');
+  expect(func.functionName).toEqual('folder_name_trigger_0');
 });

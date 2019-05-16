@@ -141,7 +141,7 @@ const deploy = async function (staging: string, func: any) {
   }
 
   // 转换函数名
-  const FunctionName = func.name.replace(/\//g, '_');
+  const FunctionName = func.name.replace(/[^a-zA-Z0-9-_]/g, '_');
 
   // 处理环境变量
   func.resource.config.Environment = formatEnvironment(func.resource.config.Environment, {
