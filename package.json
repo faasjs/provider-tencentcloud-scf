@@ -18,8 +18,8 @@
   ],
   "dependencies": {
     "@faasjs/deep_merge": "beta",
-    "@faasjs/request": "beta",
     "@faasjs/logger": "beta",
+    "@faasjs/request": "beta",
     "cos-nodejs-sdk-v5": "*"
   },
   "devDependencies": {
@@ -27,6 +27,8 @@
     "@babel/preset-env": "*",
     "@babel/preset-typescript": "*",
     "@faasjs/eslint-config-recommended": "beta",
+    "@faasjs/flow": "beta",
+    "@faasjs/trigger-http": "^0.0.0-alpha.7",
     "@types/debug": "*",
     "@types/jest": "*",
     "@types/node": "*",

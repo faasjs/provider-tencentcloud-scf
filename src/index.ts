@@ -1,6 +1,7 @@
 import deepMerge from '@faasjs/deep_merge';
 import request from '@faasjs/request';
 import Logger from '@faasjs/logger';
+import Flow from '@faasjs/flow';
 import { execSync } from 'child_process';
 import * as crypto from 'crypto';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -227,6 +228,82 @@ const deploy = async function (staging: string, func: any) {
 
   return true;
 };
+
+export default function (resource: any, flow: Flow) {
+  flow.remoteInvoke = function (index: number, data: any) {
+    flow.logger.debug('remoteInvoke #%i with %o', index, data);
+
+    return action(flow.logger, flow.config.resource!.provider!.config, {
+      Action: 'Invoke',
+      ClientContext: JSON.stringify(data),
+      FunctionName: `${flow.config.name!.replace(/\//g, '_')}_invoke_${index}`,
+      Namespace: process.env.FaasEnv,
+      InvocationType: 'Event'
+    });
+  };
+
+  flow.processOrigin = async function ({ type, event, context }: { type: string; event: any; context: any }): Promise<{
+    context: {
+      trackId: string;
+      history: Stack[];
+      current: Stack;
+    };
+    event: any;
+    origin: {
+      context: any;
+      event: any;
+      type: string;
+    };
+    type: string;
+  }> {
+    const processed: any = {
+      context: context || Object.create(null),
+      event: Object.create(null),
+      origin: {
+        context,
+        event,
+        type,
+      },
+      type,
+    };
+
+    // 生成当前环境
+    processed.context.current = {
+      id: context.request_id || new Date().getTime().toString(),
+      time: new Date().getTime(),
+      type,
+    };
+
+    // 生成历史环境
+    if (!processed.context.history) {
+      processed.context.history = [];
+    }
+    processed.context.history.push(processed.context.current);
+
+    // 生成日志追踪 ID
+    if (!processed.context.trackId) {
+      processed.context.trackId = processed.context.current.id;
+    }
+
+    // 针对特殊类型进行格式统一适配
+    switch (type) {
+      case 'http':
+        processed.event = {
+          body: event.body,
+          header: event.headers,
+          method: event.httpMethod,
+          query: event.queryString,
+        };
+        break;
+      default:
+        processed.event = event;
+    }
+
+    return processed;
+  };
+
+  return flow;
+}
 
 export {
   action,
