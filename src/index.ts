@@ -4,6 +4,13 @@ import Logger from '@faasjs/logger';
 import Flow from '@faasjs/flow';
 import { execSync } from 'child_process';
 import * as crypto from 'crypto';
+
+interface Stack {
+  type: string;
+  id: string;
+  time: number;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cosSdk = require('cos-nodejs-sdk-v5');
 
@@ -56,7 +63,7 @@ const cosUploadFile = function (SecretId: string, SecretKey: string, params: any
  * @param config.secretKey {string} secretKey
  * @param params {object} 请求参数
  */
-const action = function (logger: Logger, config: any, params: any) {
+export function action (logger: Logger, config: any, params: any) {
   logger.debug('%o', params);
 
   params = Object.assign({
@@ -85,7 +92,7 @@ const action = function (logger: Logger, config: any, params: any) {
       return body.Response;
     }
   });
-};
+}
 
 const formatEnvironment = function (env: any, extra: any) {
   let Variables: any[] = [];
@@ -118,7 +125,7 @@ const formatEnvironment = function (env: any, extra: any) {
  * @param staging {string} 部署环境
  * @param func {object} 部署配置
  */
-const deploy = async function (staging: string, func: any) {
+export async function deploy (staging: string, func: any) {
   const logger = new Logger('@faasjs/tencentcloud-faas:deploy:' + func.name);
 
   logger.debug('开始发布\n\nstaging:\n%s\n\nfunc:\n%o', staging, func);
@@ -227,16 +234,16 @@ const deploy = async function (staging: string, func: any) {
   func.version = res.FunctionVersion;
 
   return true;
-};
+}
 
-export default function (resource: any, flow: Flow) {
+export function handler (resource: any, flow: Flow) {
   flow.remoteInvoke = function (index: number, data: any) {
     flow.logger.debug('remoteInvoke #%i with %o', index, data);
 
-    return action(flow.logger, flow.config.resource!.provider!.config, {
+    return action(flow.logger, flow.resource!.provider!.config, {
       Action: 'Invoke',
       ClientContext: JSON.stringify(data),
-      FunctionName: `${flow.config.name!.replace(/\//g, '_')}_invoke_${index}`,
+      FunctionName: `${flow.name!.replace(/\//g, '_')}_invoke_${index}`,
       Namespace: process.env.FaasEnv,
       InvocationType: 'Event'
     });
@@ -304,8 +311,3 @@ export default function (resource: any, flow: Flow) {
 
   return flow;
 }
-
-export {
-  action,
-  deploy,
-};

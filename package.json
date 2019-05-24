@@ -1,6 +1,6 @@
 {
   "name": "@faasjs/provider-tencentcloud-scf",
-  "version": "0.0.0-alpha.11",
+  "version": "0.0.0-alpha.12",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "lib/index.es.js",
@@ -28,7 +28,7 @@
     "@babel/preset-typescript": "*",
     "@faasjs/eslint-config-recommended": "beta",
     "@faasjs/flow": "beta",
-    "@faasjs/trigger-http": "^0.0.0-alpha.7",
+    "@faasjs/trigger-http": "beta",
     "@types/debug": "*",
     "@types/jest": "*",
     "@types/node": "*",

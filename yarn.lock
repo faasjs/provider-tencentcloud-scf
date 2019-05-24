@@ -666,9 +666,9 @@
     typescript "*"
 
 "@faasjs/flow@beta":
-  version "0.0.0-alpha.26"
-  resolved "https://registry.npmjs.org/@faasjs/flow/-/flow-0.0.0-alpha.26.tgz#d96261e142d2bb5c40697b896b8244e9c20004d6"
-  integrity sha512-X945ADDjTsozlNkLzPvFyu/TAnsk5GKcslvApe8dKEIwgyhaMHxdN1lZT8dcZLDqvjglfbvLS8FognaDPpnSaA==
+  version "0.0.0-alpha.27"
+  resolved "https://registry.npmjs.org/@faasjs/flow/-/flow-0.0.0-alpha.27.tgz#e6a163dab1cd4cb4d021f3ec81926c8e29e0d27a"
+  integrity sha512-yY3Gzfaa56BpXzQSfj4XGMtdqNdF4OBngBH8Vs7vj26ZccEUkXUApAiSRtKPQqT24VEQqRzldcyv0AIWGprx5A==
   dependencies:
     "@faasjs/deep_merge" beta
     "@faasjs/logger" beta
@@ -685,10 +685,10 @@
   dependencies:
     "@faasjs/logger" beta
 
-"@faasjs/trigger-http@^0.0.0-alpha.7":
-  version "0.0.0-alpha.7"
-  resolved "https://registry.npmjs.org/@faasjs/trigger-http/-/trigger-http-0.0.0-alpha.7.tgz#a7abdb6db5f537dd99728d11b3836a5cbb6b2828"
-  integrity sha512-kVQlFon8kmmz/GPizRRqK/z+UpFJnpKqzOaroGnnQLUXhQHRaj0FGTzw30dTiPHWDdveO4NN5RPYmgWG1q2ZWw==
+"@faasjs/trigger-http@beta":
+  version "0.0.0-alpha.8"
+  resolved "https://registry.npmjs.org/@faasjs/trigger-http/-/trigger-http-0.0.0-alpha.8.tgz#2e0361f9f4c4599c046eefd71b73fe3b05b98ee4"
+  integrity sha512-UrWtNHoNdqmaeYIN+rP5N1KGmQRrQKyDjA4MBu3fo0Uv2e7qBSYWnOYCk/+7Sc2JCyXPDYd/6OWY+mCE6TY3JA==
 
 "@jest/console@^24.7.1":
   version "24.7.1"
